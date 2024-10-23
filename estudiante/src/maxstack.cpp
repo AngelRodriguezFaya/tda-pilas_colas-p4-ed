@@ -9,13 +9,12 @@
  */
 
 #include <iostream>
+#include <vector>
 #include "maxstack.h"
 
 using namespace std;
 
-MaxStack::MaxStack(){
-    //TODO
-}
+MaxStack::MaxStack(){}
 
 bool MaxStack::vacia() const{
     return pila.empty();
@@ -27,7 +26,7 @@ int MaxStack::tamanio() const{
 
 void MaxStack::poner(int x){
     queue<int> aux;
-    
+
     // Vaciamos la cola de nuestra clase a una cola auxiliar
     while(!pila.empty()){
         aux.push(pila.front());
@@ -46,16 +45,18 @@ void MaxStack::poner(int x){
         pila.push(aux.front());
         aux.pop();
     }
+
 }
 
 // Eliminar el elemento implica eliminarlo de ambas colas.
 void MaxStack::quitar(){
+
     int n = pila.front();
     pila.pop();
 
-    queue<int> aux;
+    vector<int> aux;
     while(maximos.top() != n){
-        aux.push(maximos.top());
+        aux.push_back(maximos.top());
         maximos.pop();
     }
 
@@ -65,20 +66,21 @@ void MaxStack::quitar(){
     // Volvemos a meter los elementos que hay en la cola auxiliar en la cola con prioridad.
     while(!aux.empty()){
         maximos.push(aux.front());
-        aux.pop();
+        aux.erase(aux.begin());
     }   
+
 }
 
+// Corregido el error de segmetation fault. Ahora se devuelve un elemento por valor y no por referencia.
 elemento MaxStack::tope(){
+
     elemento e;
+
     e.valor = pila.front();
     e.maximo = maximos.top();
 
-    this->quitar();
-    
     return e;
 }
-
 
 
 

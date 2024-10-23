@@ -19,6 +19,11 @@ using namespace std;
 struct elemento{
     int valor;
     int maximo;
+
+    friend ostream& operator<<(ostream& os, const elemento& e){
+        os << e.valor << ", " << e.maximo;
+        return os;
+    }
 };
 
 class MaxStack{
@@ -30,6 +35,9 @@ class MaxStack{
 
     public:
 
+        /**
+         * @brief Constructor por defecto de 
+         */
         MaxStack();
 
         bool vacia() const;
@@ -42,20 +50,6 @@ class MaxStack{
 
         elemento tope();
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #endif // MAXSTACK__H
 
