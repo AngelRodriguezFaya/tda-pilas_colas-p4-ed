@@ -49,6 +49,7 @@ void MaxStack::poner(int x){
 }
 
 // Eliminar el elemento implica eliminarlo de ambas colas.
+// Cambiar
 void MaxStack::quitar(){
 
     int n = pila.front();
