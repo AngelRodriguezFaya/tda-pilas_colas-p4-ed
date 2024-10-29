@@ -51,15 +51,15 @@ class MaxQueue{
 
         MaxQueue(const MaxQueue& mq);
 
-        // empty
+        void empty();
 
-        // size
+        int size();
 
-        // front
+        elemento front();
 
-        // back
+        elemento back();
 
-        // push
+        void push(int n);
 
-        // pop
-}
+        void pop();
+};
