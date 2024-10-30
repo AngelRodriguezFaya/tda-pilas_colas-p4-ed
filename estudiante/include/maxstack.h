@@ -119,7 +119,7 @@ class MaxStack{
 
         /**
          * @brief Devuelve el elemento que hay en el tope de la pila.
-         * @pre La pila debe estar creada y no debe estar vacía.
+         * @pre Tanto la pila como los maximos no pueden estar vacios.
          * @return elemento, objeto de tipo elemento que contiene el valor y el maximo del elemento que hay en el tope de la pila. 
          */
         elemento tope();
