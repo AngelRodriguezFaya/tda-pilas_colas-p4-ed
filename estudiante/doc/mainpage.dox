@@ -1,11 +1,34 @@
-/*! \mainpage Título de la página principal
+/*! \mainpage Práctica 4: TDA Lineales. Listas, pilas, colas y colas con prioridad
 
-# Introducción
+@image
 
-A RELLENAR POR EL ESTUDIANTE
+### Autores:
+#### Ángel Rodríguez Faya   arf04@correo.ugr.es
+#### Gabriel Josué Marcano Grimán   gabrielmarcano@correo.ugr.es
 
-# Ejecutables
+### Fecha de entrega:
+#### 18 de octubre de 2024
 
-A RELLENAR POR EL ESTUDIANTE
+### Estructura de Datos. Ingeniería Informática. Universidad de Granada.
+
+# Índice
+#### 1. INTRODUCCIÓN.
+#### 2. CLAVES A TENER EN CUENTA. ¡MUY IMPORTANTE!
+    - 2.1. 
+#### 3. TDA MAXSTACK.
+
+#### 4. TDA MAXQUEUE.
+
+#### 5. EJEMPLOS DE EJECUCIÓN
+
+# 1. INTRODUCCIÓN.
+
+# 2. CLAVES A TENER EN CUENTA. ¡MUY IMPORTANTE!
+
+# 3. TDA MAXSTACK.
+
+# 4. TDA MAXQUEUE.
+
+# 5. EJEMPLOS DE EJECUCIÓN
 
 */
