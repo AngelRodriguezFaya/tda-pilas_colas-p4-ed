@@ -5,7 +5,7 @@
  * @authors Gabriel Josué Marcano Grimán
  *          Ángel Rodíguez Faya
  *
- * @date Octubre 2024
+ * @date Noviembre 2024
  */
 
 #define MAXSTACK__H

@@ -1,7 +1,11 @@
 /**
  * @file maxqueue.cpp
  * @brief  Archivo de implementación del TDA MaxQueue
- * @author
+ * 
+ * @authors Gabriel Josué Marcano Grimán
+ *          Ángel Rodíguez Faya
+ *
+ * @date Noviembre 2024
  */
 
 #include <iostream>

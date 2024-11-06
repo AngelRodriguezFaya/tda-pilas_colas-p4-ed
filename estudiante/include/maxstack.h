@@ -5,7 +5,7 @@
  * @authors Gabriel Josué Marcano Grimán
  *          Ángel Rodíguez Faya
  *
- * @date Octubre 2024
+ * @date Noviembre 2024
  */
 
 #ifndef MAXSTACK__H
@@ -107,7 +107,7 @@ class MaxStack{
          * @return void
          * @post La pila contiene un elemento más, que es el entero x.
          */
-        void poner(int x);
+        void poner(const int &x);
 
         /**
          * @brief Elimina el elemento que hay en el tope de la pila.
