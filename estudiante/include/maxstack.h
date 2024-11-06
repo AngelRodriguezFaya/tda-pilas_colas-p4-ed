@@ -5,7 +5,7 @@
  * @authors Gabriel Josué Marcano Grimán
  *          Ángel Rodíguez Faya
  *
- * @date Octubre 2024
+ * @date Noviembre 2024
  */
 
 #ifndef MAXSTACK__H
@@ -107,7 +107,7 @@ class MaxStack{
          * @return void
          * @post La pila contiene un elemento más, que es el entero x.
          */
-        void poner(int x);
+        void poner(const int &x);
 
         /**
          * @brief Elimina el elemento que hay en el tope de la pila.
@@ -119,7 +119,7 @@ class MaxStack{
 
         /**
          * @brief Devuelve el elemento que hay en el tope de la pila.
-         * @pre La pila debe estar creada y no debe estar vacía.
+         * @pre Tanto la pila como los maximos no pueden estar vacios.
          * @return elemento, objeto de tipo elemento que contiene el valor y el maximo del elemento que hay en el tope de la pila. 
          */
         elemento tope();

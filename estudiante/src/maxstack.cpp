@@ -5,7 +5,7 @@
  * @authors Gabriel Josué Marcano Grimán
  *          Ángel Rodíguez Faya
  *
- * @date Octubre 2024
+ * @date Noviembre 2024
  */
 
 #include <iostream>
@@ -24,7 +24,8 @@ int MaxStack::tamanio() const{
     return pila.size();
 }
 
-void MaxStack::poner(int x){
+void MaxStack::poner(const int &x){
+
     queue<int> aux;
 
     // Vaciamos la cola de nuestra clase a una cola auxiliar
@@ -36,9 +37,6 @@ void MaxStack::poner(int x){
     // Una vez que esté vacía, metemos el nuevo elemento en la cola de nuestra clase
     pila.push(x);
 
-    // Inserto el nuevo elemento en la cola con prioridad
-    maximos.push(x);
-
     // Volvemos a meter los elementos que hay en la cola auxiliar en la cola de nuestra clase.
     // De esta forma, el nuevo elemento quedará en la parte superior de la cola, simulando el comportamiento de una pila.
     while(!aux.empty()){
@@ -46,30 +44,22 @@ void MaxStack::poner(int x){
         aux.pop();
     }
 
+    // Inserto el nuevo elemento en la cola con prioridad SI ES CANDIDATO A SER EL NUEVO MÁXIMO, SI NO, NO LO METO.
+    if (!maximos.empty()){
+        if(maximos.top() <= x)
+            maximos.push(x);
+    } else 
+        maximos.push(x);
 }
 
 // Eliminar el elemento implica eliminarlo de ambas colas.
-// Cambiar
 void MaxStack::quitar(){
 
-    int n = pila.front();
-    pila.pop();
-
-    vector<int> aux;
-    while(maximos.top() != n){
-        aux.push_back(maximos.top());
+    if(pila.front() == maximos.top()){
         maximos.pop();
     }
 
-    //Una vez que hemos encontrado el elemento a eliminar de la cola con prioridad, lo eliminamos.
-    maximos.pop();
-
-    // Volvemos a meter los elementos que hay en la cola auxiliar en la cola con prioridad.
-    while(!aux.empty()){
-        maximos.push(aux.front());
-        aux.erase(aux.begin());
-    }   
-
+    pila.pop();
 }
 
 // Corregido el error de segmetation fault. Ahora se devuelve un elemento por valor y no por referencia.
