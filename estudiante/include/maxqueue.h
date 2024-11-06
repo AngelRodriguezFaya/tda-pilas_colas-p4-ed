@@ -43,6 +43,9 @@ class MaxQueue{
     
     private:
 
+        /**
+         * @brief Lista para almacenar los elementos de la cola
+         */
         list<elemento> cola;
 
     public:
