@@ -14,17 +14,26 @@
 # Índice
 #### 1. INTRODUCCIÓN.
 #### 2. CLAVES A TENER EN CUENTA. ¡MUY IMPORTANTE!
-    - 2.1. La estructura **elemento** la hemos definido e implementado en **maxstack.h** y **maxqueue.h**. El motivo de hacerlo en los dos archivos 
-    y repetir código es porque queremos que funcionen de forma independiente entre ellos, y así, en caso de que tuviesemos que mostrar o entregar un 
-    sólo ejercicio no tendría porque depender del otro, y podría funcionar correctamente.  
-
+    - 2.1. La estructura **elemento**.
+    - 2.2. Cambio en la cabecera de MaxStack::tope().
 #### 3. TDA MAXSTACK.  
-
+    - 3.1. Estructura interna.
+    - 3.2. Constructor.
+    - 3.3. Funciones.  
+#### 4. TDA MAXQUEUE. 
 #### 5. EJEMPLOS DE EJECUCIÓN
 
 # 1. INTRODUCCIÓN.
 
 # 2. CLAVES A TENER EN CUENTA. ¡MUY IMPORTANTE!
+    - 2.1. La estructura **elemento** la hemos definido e implementado en **maxstack.h** y **maxqueue.h**. El motivo de hacerlo en los dos archivos 
+    y repetir código es porque queremos que funcionen de forma independiente entre ellos, y así, en caso de que tuviesemos que mostrar o entregar un 
+    sólo ejercicio no tendría porque depender del otro, y podría funcionar correctamente.  
+
+    - 2.2. La función MaxStack::tope() devuelve un elememto por copia y no por referencia. Todas las demás funciones de la clase MaxStack tienen las 
+    mismas cabeceras que las de la pila de la STL (stack), pero en la función tope no hemos podido mantenerla. Esto es debido a que no podemos devolver por 
+    referencia una variable local de la función, que es **e, del struct elemento**, donde le asignamos el valor y el máximo que habría en el tope de la pila.
+    Por eso, si la modificamos y la ponemos que la devuelva por copia, ya no tendríamos ningún problema.    
 
 # 3. TDA MAXSTACK.  
 En este apartado explicaremos el tipo de dato MaxStack. Este tipo de dato abstracto es el primer ejercicio que se nos pide que hagamos para resolver 
@@ -47,19 +56,19 @@ A continuación, vamos a explicar cómo funcionan los métodos al igual que hici
 es mostrar el enfoque o la forma de pensar que hemos tomado para implementar dichos métodos y explicar cómo lo hacen en vez de que hacen, ya que para ver que hacen 
 podemos consultar la documentación en formato Doxygen que hemos puesto.
 
-## 3.0. ESTRUCTURA INTERNA.  
+## 3.1. ESTRUCTURA INTERNA.  
 Como ya indiquemos anteriormente, el TDA MaxStack tiene en su parte privada las dos colas de la STL que utilizaremos para poder representar la pila de máximos, estas 
 las hemos declarado de la siguiente manera:  
 - **queue<int> pila**  
 - **priority_queue<int> maximos**  
 
-## 3.1. CONSTRUCTOR.
+## 3.2. CONSTRUCTOR.
 
 - **MaxStack::MaxStack()**
 Es el constructor por defecto y el único constructor de la clase MaxStack. No inicializa nada por defecto ni nada parecido, sólo se crea una instancia de la clase, donde
 la cola pila y la cola con prioridad maximos estan vacias, capacidad=tamaño=0.
 
-## 3.2. FUNCIONES.
+## 3.3. FUNCIONES.
 
 - **bool MaxStack::vacia() const**
 Comprueba si la pila esta vacía o no, devolviendo true si lo está y false si no lo está. Internamente llama a la función .empty() de la cola de la STL.
@@ -112,7 +121,7 @@ los máximos) el número que queremos insertar en la pila, si dicho número no v
     que hemos insertado el elemento x en la cola pila, toca tratarlo en la cola de máximos. Lo primero que hacemos es comoprobar si la cola de máximos no está vacía,y ahora se nos presentan dos casos: **CASO 1: la cola de máximos no está vacía**, 
     entonces lo siguiente que encontramos es comprobar el elemento que se encuentra en el tope (el mayor elemento que hay en la cola maximos hasta el momento), si es menor o igual que el número x (el número que queremos insertar) insertamos x en la cola de máximos; en caso de que
     x sea menor que número tope de la cola, ni lo insertamos, pues nunca será un máximo ya que hay un elemento que es mayor y que insertemos anteriormente, y debido a nuestra política LIFO de MaxStack, el número x saldrá antes
-    que el elemento que ya hay en el tope, luego cuando hagamos un MaxStack::tope(), si x es el número que hay en el tope de la pila, se nos devolverá x y el elemento que hay en el tope de la pila. **CASO 2: la cola de máximos está vacía, ** lo 
+    que el elemento que ya hay en el tope, luego cuando hagamos un MaxStack::tope(), si x es el número que hay en el tope de la pila, se nos devolverá x y el elemento que hay en el tope de la pila. **CASO 2: la cola de máximos está vacía** lo 
     que provoca que se inserte el número x en la cola de máximos de forma inmediata, pues no hay números con los que comparar, y será un máximo de forma inmediata.  
 
     Esto llevado al código sería: un condicional if-else donde en if la condición será que la cola de máximos no esté vacía (!maximos.empty()), si se cumple está condición entrará a otro condicional if donde la condición de ahora será que el tope de la cola
@@ -124,17 +133,80 @@ los máximos) el número que queremos insertar en la pila, si dicho número no v
 
     Finalmente, muestro un ejemplo de como se gestionaría la cola máximos dependiendo de las dos situaciones que se nos pueden presentar.
 
+    1er Caso el número a insertar x es mayor que el número tope de la cola de máximos.      
+    1. Estado inicial.  
+    Nos encontramos con: x=9, pila:[3, 2], maximos:[2, 3] donde pila.front()=3 (simulando el tope de la pila), y maximos.top()=3.  
+
+    2. Estado final.  
+    Tenemos que: x=9, pila:[9, 3, 2], maximos:[2, 3, 9] donde pila.front()=9 (simulando el tope de la pila), y maximos.top()=9.  
+
+    2do Caso: el número a insertar x es menor que el número tope de la cola de máximos.   
+
+    1. Estado inicial.  
+    Nos encontramos con: x=1, pila:[3, 2], maximos:[2, 3] donde pila.front()=3 (simulando el tope de la pila), y maximos.top()=2.  
+
+    2. Estado final.  
+    Tenemos que: x=1, pila:[1, 2, 3], maximos:[2, 3] donde pila.front()=1 (simulando el tope de la pila), y maximos.top()=3,, el mismo que antes, y no se inserta el 1 en maximos ya que no es candidato a serlo.  
+
+    El código de la función es:  
+    @image html poner_MaxStack.png
 
 
-los máximos
+- **void MaxStack::quitar()**  
+    Elimina el elemento que hay en el tope de la pila, esto es, elimina el número que hay en el frente de la cola pila y el número que hay en el tope 
+    de la cola máximos. Tenemos que tener en cuenta que en la cola maximos no están todos los números que hay en la cola pila, por eso a la hora de quitar
+    el número, tenemos que comprobar que el número que queremos extraer de la cola pila esté en el tope de la cola máximos (ya que por la forma en la que implementamos
+    la función poner() que acabamos de mencionar, está todo pensado para que a la hora de extraer un elememto que ha sido un máximo, coincidan que estén en el frente de la cola pila
+    y en el tope de la cola máximos). Entonces, lo que hacemos es comprobar que el número a extraer esté en ambas colas, que lo está, pues lo eliminamos de ambas, que no está en máximos, pues 
+    obviamente sólo eliminamos el número de la cola pila. Así es como se vacía nuestra estructura MaxStack.  
 
-- **void MaxStack::quitar()**
-
-- **elemento MaxStack::tope()**
+- **elemento MaxStack::tope()**  
+    Hay una modificación en esta función, y ya lo hemos indicado en el punto 2.2. Si miramos en cplusplus.com la función stack::top() pondremos observar que devuelve **una referencia &**
+    al elemento que devuelve, en nuestro caso, creamos una instancia e del struct elemento dentro de la función, a e.valor le asignamos el número que hay en el frente de la cola pila y en e.maximo
+    le asignamos el número que hay en el tope de la cola máximos, y devolvemos el objeto e. Después de explicar esto, podemos observar que **e** es una variable local de la función MaxStack::tope(),
+    por lo que si lo devolvemos por referencia en vez de por copia una vez que termina de ejecutarse la función **e** muere y nos devolvería una posición de memoria donde **antes estaba e pero ya no,
+    por lo que nos dará un segmentation fault**, en cambio al devolverlo por copia no tendríamos ningún problema.
     
 # 4. TDA MAXQUEUE.
 
 
 # 5. EJEMPLOS DE EJECUCIÓN
+El objetivo de este punto es mostrar varios ejemplos de ejecución de MaxStack y MaxQueue para unos datos de entrada concretos. Para ello, utilizaremos los
+archivos pila_max.cpp y cola_max.cpp que nos proporciona el profesor. Dichos archivos contienen la función main() necesaria para que se puedan ejecutar nuestros TDAs.  
+
+**Recordamos que antes de ejecutar los programas tenemos que compilar nuestro proyecto, por eso debemos abrir una terminal y nos situamos en la raíz del proyecto, una vez ahí
+debemos ejecutar: **
+
+> $cmake CMakeLists.txt  
+> &make  
+
+Una vez que hayamos echo esto, **ya tendríamos nuestro proyecto compilado, ahora ya podemos ejecutarlo como indicamos más abajo.**  
+
+Por último, destacar que los parámetros de entrada que aceptan tanto MaxStack como MaxQueue son **números enteros, como los números a insertar en la pila y en la cola, y .
+para decirle que elimine el elememto que hay en el tope de la pila o en el frente de la cola**.
+
+## 5.1. TDA MAXSTACK
+Para ejecutar el TDA MAX, debemos situarnos en la raíz del proyecto y ejecutar en una terminal:  
+
+> $./pila_max argumentos  
+
+Pongo solamente argumentos porque como ya hemos indicado, pueden ser tanto números como puntos '.'. Ahora vamos a ver 3 ejemplos donde quedará más claro.  
+
+### 1er ejemplo.  
+> $./pila_max 1 2 . 3 4 . . .  
+La salida sería:  
+@image html ejemplo1_maxstack.png
+
+### 2do ejemplo.  
+> $./pila_max 1 3 4 9 1 1 . . . . . .
+La salida sería:  
+@image html ejemplo2_maxstack.png
+
+### 3er ejemplo.  
+> $./pila_max 1 7 4 2 8 . . . . .
+La salida sería:  
+@image html ejemplo3_maxstack.png
+
+## 5.2. TDA MAXQUEUE
 
 */
