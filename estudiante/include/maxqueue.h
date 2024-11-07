@@ -25,6 +25,15 @@ struct elemento{
     int valor;
     int maximo;
 
+    /*
+    elemento(){}
+
+    elemento(int v, int m){
+        valor = v;
+        maximo = m;
+    }
+     */
+
     /**
      * @brief Sobrecarga del operador de salida.
      * @param os Referencia al flujo de salida.
@@ -54,15 +63,25 @@ class MaxQueue{
 
         MaxQueue(const MaxQueue& mq);
 
-        void empty();
+        bool empty() const;
 
-        int size();
+        int size() const;
 
-        elemento front();
+        elemento& front();
 
-        elemento back();
+        const elemento& front() const;
 
-        void push(int n);
+        elemento& back();
+
+        const elemento& back() const;
+
+        void push(const int& n);
+
+        //void push(const int&& n);
+
+        //void emplace(int n);
 
         void pop();
+
+        void swap(MaxQueue& c) noexcept;
 };

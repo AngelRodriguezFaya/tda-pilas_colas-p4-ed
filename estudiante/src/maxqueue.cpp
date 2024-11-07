@@ -21,37 +21,49 @@ MaxQueue::MaxQueue(const MaxQueue& mq){
 
 }
 
-void MaxQueue::empty() {
+bool MaxQueue::empty() const{
 
-    cola.clear();
+    return cola.size()==0;
 
 }
 
-int MaxQueue::size() {
+int MaxQueue::size() const{
 
     return cola.size();
 
 }
 
-elemento MaxQueue::front() {
+elemento& MaxQueue::front() {
 
     return cola.front();
 
 }
 
-elemento MaxQueue::back() {
+const elemento& MaxQueue::front() const{
+
+    return cola.front();
+
+}
+
+elemento& MaxQueue::back() {
 
     return cola.back();
 
 }
 
-void MaxQueue::push(int n) {
+const elemento& MaxQueue::back() const{
+
+    return cola.back();
+
+}
+
+void MaxQueue::push(const int& n) {
 
     elemento aux;
     aux.valor = n;
     aux.maximo = n;
 
-    if(cola.size() == 0){
+    if(cola.empty()){
 
         cola.push_back(aux);
 
@@ -68,8 +80,36 @@ void MaxQueue::push(int n) {
     }
 }
 
+/*
+void MaxQueue::emplace(int n){
+
+    if(cola.empty()){
+
+        cola.emplace_back(n, n);
+
+    }else{
+
+        cola.emplace_back(n, n);
+
+        auto rit = cola.rbegin();
+        while(n > (*++rit).maximo){
+
+            (*rit).maximo = n;
+
+        }
+    }
+
+}
+*/
+
 void MaxQueue::pop() {
 
     cola.pop_front();
+
+}
+
+void MaxQueue::swap(MaxQueue& c) noexcept{
+
+    cola.swap(c.cola);
 
 }
