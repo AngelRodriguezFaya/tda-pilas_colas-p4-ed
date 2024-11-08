@@ -18,6 +18,7 @@ MaxQueue::MaxQueue() {}
 
 MaxQueue::MaxQueue(const MaxQueue& mq){
 
+    cola = mq.cola;
 
 }
 

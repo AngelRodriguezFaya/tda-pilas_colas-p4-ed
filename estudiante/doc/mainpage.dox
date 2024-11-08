@@ -168,6 +168,15 @@ los máximos) el número que queremos insertar en la pila, si dicho número no v
     por lo que nos dará un segmentation fault**, en cambio al devolverlo por copia no tendríamos ningún problema.
     
 # 4. TDA MAXQUEUE.
+En este apartado explicaremos el tipo de dato MaxQueue. Este tipo de dato abstracto es el segundo tipo de dato necesario para resolver esta práctica. Se trata de un contenedor que se comporta como una
+cola y que utiliza como contenedor subyacente una lista de elemento, una estructura compuesta por un par de enteros: valor que contiene el valor del elemento y maximo, que contiene el valor máximo que
+hay en la cola detrás de un elemento.
+
+## 4.1. ESTRUCTURA INTERNA.
+
+## 3.2. CONSTRUCTOR.
+
+## 3.3. FUNCIONES.
 
 
 # 5. EJEMPLOS DE EJECUCIÓN
