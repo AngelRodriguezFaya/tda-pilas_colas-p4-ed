@@ -52,7 +52,6 @@ void MaxStack::poner(const int &x){
         maximos.push(x);
 }
 
-// Eliminar el elemento implica eliminarlo de ambas colas.
 void MaxStack::quitar(){
 
     if(pila.front() == maximos.top()){
@@ -62,7 +61,6 @@ void MaxStack::quitar(){
     pila.pop();
 }
 
-// Corregido el error de segmetation fault. Ahora se devuelve un elemento por valor y no por referencia.
 elemento MaxStack::tope(){
 
     elemento e;
