@@ -169,14 +169,90 @@ los máximos) el número que queremos insertar en la pila, si dicho número no v
     
 # 4. TDA MAXQUEUE.
 En este apartado explicaremos el tipo de dato MaxQueue. Este tipo de dato abstracto es el segundo tipo de dato necesario para resolver esta práctica. Se trata de un contenedor que se comporta como una
-cola y que utiliza como contenedor subyacente una lista de elemento, una estructura compuesta por un par de enteros: valor que contiene el valor del elemento y maximo, que contiene el valor máximo que
-hay en la cola detrás de un elemento.
+cola de enteros con un valor máximo asociado. Esto significa que, en cada inserción, se guardará el número entero que le indiquemos y, junto a él, se almacenará el mayor número que se encuentra detrás
+de dicho entero en la cola o él mismo en caso de ser el mayor.
+
+Para implementar esta estructura, hemos optado por utilizar como contenedores subyacentes una lista doblemente enlazada (list) que guarda los elementos en el orden en que fueron insertados. El tipo de
+dato que alberga esta cola es elemento, un struct formado por dos enteros: valor, que contiene el valor que se quiere insertar, y maximo, que contiene el valor maximo de la cola siguiendo el criterio
+explicado anteriormente. Vamos a ilustrar este funcionamiento con un ejemplo:
+
+Supongamos que tenemos un objeto de la clase MaxQueue donde los elementos en el campo valor contienen los siguientes enteros: 3, 4, 5, 2, 3, 1, 2 (con 3 siendo el frente de la cola). En este caso, los
+valores correspondientes en el campo maximo serán: 5, 5, 5, 3, 3, 2, 2. Esta estructura permite que MaxQueue no solo devuelva el valor del primer elemento, sino que también proporcione el mayor valor
+actual en la cola cada vez que se consulta el frente de la cola (front).
+
+Si insertaramos en la cola anterior un elemento con valor 6, al ser mayor que todos los máximos, el máximo de el resto de elementos se actualizaría. Si detrás de este 6 insertaramos un elemento con valor
+inferior, por ejemplo el 2, el máximo de este elemento sería 2. Aunque frente a este elemento hayan otros con un valor mayor para cuando lleguemos a consultar este elemento antes habremos hecho pop
+de todos los elementos anteriores, incluyendo el 6 insertado anteriormente.
+
+A continuación explicaremos como operan las funciones de MaxQueue y profundizaremos en su estructura.
 
 ## 4.1. ESTRUCTURA INTERNA.
+El TDA MaxQueue contiene en su parte privada la cola de elementos mencionada anteriormente.
+- **list<elemento> cola**
+Donde elemento esta formado por la siguiente estructura:
+- **int valor**
+- **int maximo**
+
 
 ## 3.2. CONSTRUCTOR.
+- **MaxQueue::MaxQueue()**
+Constructor por defecto, crea una instancia de la clase donde la cola de elementos está vacia.
+- **MaxQueue::MaxQueue(const MaxQueue& mq)**
+Constructor de copia, crea una instancia nueva y copia en la cola de esta nueva instancia el contenido de la cola de la MaxQueue que se pasa como parámetro.
 
 ## 3.3. FUNCIONES.
+- **bool MaxQueue::empty() const**
+Compruba si la cola está vacía, devuelve true si lo está y false si no. Este método utiliza la función empty() de la clase list de la STL.
+
+- **int MaxQueue::size() const**
+Devuelve el número de elementos en la cola. Este método utiliza la función size() de la clase list de la STL.
+
+- **elemento& MaxQueue::front()**
+Devuelve una referencia al primer elemento de la cola, permitiendo acceder y modificar su valor. Este método utiliza la función front() de la clase list de la STL.
+
+- **const elemento& MaxQueue::front() const**
+Devuelve una referencia constante al primer elemento de la cola, permitiendo solo la lectura del mismo. Utiliza la función front() de la clase list de la STL.
+
+- **elemento& MaxQueue::back()**
+Devuelve una referencia al último elemento de la cola, permitiendo tanto la lectura como la modificación de su valor. Este método utiliza la función back() de la clase list de la STL.
+
+- **const elemento& MaxQueue::back() const**
+Devuelve una referencia constante al último elemento de la cola, permitiendo solo su lectura. Utiliza la función back() de la clase list de la STL.
+
+- **void MaxQueue::push(const int& n)**
+Inserta un nuevo elemento en la cola con valor y maximo n. Y si la cola no estaba vacia antes de llamar al método verifica si es necesario reemplazar el maximo del resto de elementos
+con el valor del elemento insertado.
+
+Primero se crea un elemento aux que es el que se va a insertar en la cola y a este se le asignan como valor y maximo el n que pasamos como argumento a la función. Se verifica si la cola
+está vacia o no, si lo está simplemente se inserta el elemento aux, si no, se inserta y se actualizan los máximo de los elementos que ya estaban en la cola si es necesario de la siguiente
+manera: Con un iterador reverso y un bucle while recorremos la cola desde el final, mientras que el valor del nuevo elemento sea mayor que el maximo del siguiente elemento, se reemplaza el
+maximo del siguiente elemento con el valor del nuevo elemento. Así se van actualizando los máximos de todos los elementos de la cola hasta encontrar alguno que no cumpla la condición, es decir,
+cuyo máximo sea mayor que el nuevo valor insertado.
+
+Veamos ejemplos:
+
+    1. Tenemos una MaxQueue con elementos con los siguientes valores: 4 6 3, los máximos de estos elementos serían: 6 6 3.
+
+    2. Si insertamos un valor mayor que todos los anteriores.
+    Si insertamos un elemento cuyo valor es mayor que todos los elementos de la cola como lo es el 8. Se insertará este elemento al final de la cola y se recorrera desde el final sustituyendo
+    los máximos de los demás elementos con el nuevo valor hasta encontrar un elemento con un valor mayor al nuevo, en este caso no ocurre por lo que se actualiza el maximo de todos los elementos
+    que ya estaban en la cola. Ahora los elementos tendrian por valor: 4 6 3 8, y como maximo: 8 8 8 8
+
+    3. Si insertamos un valor meneor que todos los anteriores.
+    Si en lugar de insertar un número mayor insertamos uno menor que todos los que ya están en la cola, por ejemplo el 2, la condición para entrar en el bucle while nunca se cumpliría ya que el
+    valor del nuevo elemento es menor que el valor del elemento siguiente. En este caso simplemente se inserta el nuevo elemento con máximo igual a su valor. Los elementos de la cola tendrían
+    los valores: 4 6 3 2, y máximos: 6 6 3 2
+
+    3. Si insertamos un valor menor que el máximo mayor dentro de la cola pero mayor que el último elemento.
+    Supongamos que queremos insertar un elemento con valor 4, en este caso si se entra en el bucle while tras insertar el nuevo elemento y se actualizan los maximos hasta llegar al elemento con
+    valor 6, pues este valor es mayor que el del nuevo elemento, por lo tanto los elementos de la cola tendrían valor: 4 6 3 4, y máximos 6 6 4 4.
+
+- **void MaxQueue::pop()**
+Elimina el primer elemento de la cola. Este método utiliza la función pop_front() de la clase list de la STL.
+
+- **void MaxQueue::swap(MaxQueue& c) noexcept**
+Intercambia el contenido de la cola actual con el de la cola c. Este método utiliza la función swap() de la STL para intercambiar los elementos de los contenedores subyacentes de ambos
+objetos MaxQueue. No lanza excepciones, lo que garantiza su ejecución sin interrupciones inesperadas.
 
 
 # 5. EJEMPLOS DE EJECUCIÓN
@@ -217,5 +293,26 @@ La salida sería:
 @image html ejemplo3_maxstack.png
 
 ## 5.2. TDA MAXQUEUE
+Para ejecutar MaxQueue nos situamos en la raiz del proyecto y ejecutamos en una terminal utilizando el siguiente formato:
 
-*/
+> $./cola_max <argumentos>
+
+## 1er ejemplo.
+> $./cola_max 1 2 . 3 4 . . .
+La salida sería:
+@image html ejemplo1_maxqueue.png
+
+### 2do ejemplo.
+> $./cola_max 4 6 3 8 . . . .
+La salida sería:
+@image html ejemplo2_maxqueue.png
+
+### 3er ejemplo.
+> $./cola_max 4 6 3 2 . . . .
+La salida sería:
+@image html ejemplo3_maxqueue.png
+
+### 4to ejemplo.
+> $./cola_max 4 6 3 4 . . . .
+La salida sería:
+@image html ejemplo4_maxqueue.png
