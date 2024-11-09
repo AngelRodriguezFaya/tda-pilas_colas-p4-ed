@@ -186,8 +186,8 @@ archivos pila_max.cpp y cola_max.cpp que nos proporciona el profesor. Dichos arc
 **Recordamos que antes de ejecutar los programas tenemos que compilar nuestro proyecto, por eso debemos abrir una terminal y nos situamos en la raíz del proyecto, una vez ahí
 debemos ejecutar: **
 
-> $cmake CMakeLists.txt  
-> &make  
+> $ cmake CMakeLists.txt  
+> & make  
 
 Una vez que hayamos echo esto, **ya tendríamos nuestro proyecto compilado, ahora ya podemos ejecutarlo como indicamos más abajo.**  
 
@@ -197,22 +197,22 @@ para decirle que elimine el elememto que hay en el tope de la pila o en el frent
 ## 5.1. TDA MAXSTACK
 Para ejecutar el TDA MAX, debemos situarnos en la raíz del proyecto y ejecutar en una terminal:  
 
-> $./pila_max argumentos  
+> $ ./pila_max argumentos  
 
 Pongo solamente argumentos porque como ya hemos indicado, pueden ser tanto números como puntos '.'. Ahora vamos a ver 3 ejemplos donde quedará más claro.  
 
 ### 1er ejemplo.  
-> $./pila_max 1 2 . 3 4 . . .  
+> $ ./pila_max 1 2 . 3 4 . . .  
 La salida sería:  
 @image html ejemplo1_maxstack.png
 
 ### 2do ejemplo.  
-> $./pila_max 1 3 4 9 1 1 . . . . . .
+> $ ./pila_max 1 3 4 9 1 1 . . . . . .
 La salida sería:  
 @image html ejemplo2_maxstack.png
 
 ### 3er ejemplo.  
-> $./pila_max 1 7 4 2 8 . . . . .
+> $ ./pila_max 1 7 4 2 8 . . . . .
 La salida sería:  
 @image html ejemplo3_maxstack.png
 
