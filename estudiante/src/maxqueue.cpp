@@ -73,35 +73,13 @@ void MaxQueue::push(const int& n) {
         cola.push_back(aux);
 
         auto rit = cola.rbegin();
-        while(aux.maximo > (*++rit).maximo){
-
-            (*rit).maximo = aux.maximo;
-
-        }
-    }
-}
-
-/*
-void MaxQueue::emplace(int n){
-
-    if(cola.empty()){
-
-        cola.emplace_back(n, n);
-
-    }else{
-
-        cola.emplace_back(n, n);
-
-        auto rit = cola.rbegin();
         while(n > (*++rit).maximo){
 
             (*rit).maximo = n;
 
         }
     }
-
 }
-*/
 
 void MaxQueue::pop() {
 

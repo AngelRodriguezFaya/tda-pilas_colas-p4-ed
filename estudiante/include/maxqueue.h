@@ -25,15 +25,6 @@ struct elemento{
     int valor;
     int maximo;
 
-    /*
-    elemento(){}
-
-    elemento(int v, int m){
-        valor = v;
-        maximo = m;
-    }
-     */
-
     /**
      * @brief Sobrecarga del operador de salida.
      * @param os Referencia al flujo de salida.
@@ -122,10 +113,6 @@ class MaxQueue{
          * @post Actualiza los maximos de la cola de elementos.
          */
         void push(const int& n);
-
-        //void push(const int&& n);
-
-        //void emplace(int n);
 
         /**
          * @brief Elimina el primer elemento de la cola.
