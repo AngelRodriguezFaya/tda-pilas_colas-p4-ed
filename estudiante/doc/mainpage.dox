@@ -17,6 +17,7 @@
     - 2.1. La estructura **elemento**.
     - 2.2. Cambio en la cabecera de MaxStack::tope().
 #### 3. TDA MAXSTACK.
+#### 3. TDA MAXSTACK.
     - 3.1. Estructura interna.
     - 3.2. Constructor.
     - 3.3. Funciones.
@@ -38,18 +39,28 @@ unos aspectos que debemos de tener en cuenta, presentaremos y explicaremos los d
     - 2.1. La estructura **elemento** la hemos definido e implementado en **maxstack.h** y **maxqueue.h**. El motivo de hacerlo en los dos archivos
     y repetir código es porque queremos que funcionen de forma independiente entre ellos, y así, en caso de que tuviesemos que mostrar o entregar un
     sólo ejercicio no tendría porque depender del otro, y podría funcionar correctamente.
+    - 2.1. La estructura **elemento** la hemos definido e implementado en **maxstack.h** y **maxqueue.h**. El motivo de hacerlo en los dos archivos
+    y repetir código es porque queremos que funcionen de forma independiente entre ellos, y así, en caso de que tuviesemos que mostrar o entregar un
+    sólo ejercicio no tendría porque depender del otro, y podría funcionar correctamente.
 
+    - 2.2. La función MaxStack::tope() devuelve un elememto por copia y no por referencia. Todas las demás funciones de la clase MaxStack tienen las
+    mismas cabeceras que las de la pila de la STL (stack), pero en la función tope no hemos podido mantenerla. Esto es debido a que no podemos devolver por
     - 2.2. La función MaxStack::tope() devuelve un elememto por copia y no por referencia. Todas las demás funciones de la clase MaxStack tienen las
     mismas cabeceras que las de la pila de la STL (stack), pero en la función tope no hemos podido mantenerla. Esto es debido a que no podemos devolver por
     referencia una variable local de la función, que es **e, del struct elemento**, donde le asignamos el valor y el máximo que habría en el tope de la pila.
     Por eso, si la modificamos y la ponemos que la devuelva por copia, ya no tendríamos ningún problema.
+    Por eso, si la modificamos y la ponemos que la devuelva por copia, ya no tendríamos ningún problema.
 
+# 3. TDA MAXSTACK.
+En este apartado explicaremos el tipo de dato MaxStack. Este tipo de dato abstracto es el primer ejercicio que se nos pide que hagamos para resolver
 # 3. TDA MAXSTACK.
 En este apartado explicaremos el tipo de dato MaxStack. Este tipo de dato abstracto es el primer ejercicio que se nos pide que hagamos para resolver
 esta práctica. Se trata de un contenedor que se comporta como una pila de enteros con máximo, esto es, en cada insercción se guardará el número entero
 que le indiquemos y, junto a él, también se guardará el mayor número insertado hasta este momento.
+que le indiquemos y, junto a él, también se guardará el mayor número insertado hasta este momento.
 
 Para implementar esto, se tendrán que utilizar como contenedores subyacentes una cola y una cola con prioridad, que utilizaremos **queue y priority_queue
+de la STL**. La cola almacenará los elementos que se le vayan insertando, mientras que la cola con prioridad se encargará de guardar los números que serán
 de la STL**. La cola almacenará los elementos que se le vayan insertando, mientras que la cola con prioridad se encargará de guardar los números que serán
 máximos. En nuestro caso, la cola con prioridad tiene una diferencia con la cola, y es que no guarda un número que sabe que no va a ser un máximo, y esto lo
 vamos a explicar con un pequeño ejemplo:
@@ -60,11 +71,23 @@ con prioridad, siendo el contenido de esta igual que el de antes: 2, 4; pues nun
 y que se insertaron anteriormente y, debido a la política LIFO que implementan las pilas (Last Input First Output), si extraemos el elemento que hay en el tope
 de la pila tendremos (1,4), el elemneto que hay en el tope y el máximo hasta este momento que es 4. Tenemos así que el 1 ha sido extraído de la pila, volviendo
 a la situación del inicio y habiendo demostrado el ahorro y la eficiencia que supone contemplar y manejar esta situación.
+En un principio, tenemos un objeto de la clase MaxStack donde su cola tiene los elementos 2, 4 y la cola con prioridad contiene 2 y 4 también. Ahora pongamos
+que queremos insertar el número 1 a nuestro MaxStack, es decir, se inserta 1 en la cola quedando su contenido como: 2, 4, 1. El 1 no se insertaría en la cola
+con prioridad, siendo el contenido de esta igual que el de antes: 2, 4; pues nunca será un máximo de nuestra pila ya que hay elementos que son mayores que él
+y que se insertaron anteriormente y, debido a la política LIFO que implementan las pilas (Last Input First Output), si extraemos el elemento que hay en el tope
+de la pila tendremos (1,4), el elemneto que hay en el tope y el máximo hasta este momento que es 4. Tenemos así que el 1 ha sido extraído de la pila, volviendo
+a la situación del inicio y habiendo demostrado el ahorro y la eficiencia que supone contemplar y manejar esta situación.
 
 A continuación, vamos a explicar cómo funcionan los métodos al igual que hicimos en la práctica anterior. De nuevo, destacamos que el motivo de estas explicaciones
 es mostrar el enfoque o la forma de pensar que hemos tomado para implementar dichos métodos y explicar cómo lo hacen en vez de que hacen, ya que para ver que hacen
+es mostrar el enfoque o la forma de pensar que hemos tomado para implementar dichos métodos y explicar cómo lo hacen en vez de que hacen, ya que para ver que hacen
 podemos consultar la documentación en formato Doxygen que hemos puesto.
 
+## 3.1. ESTRUCTURA INTERNA.
+Como ya indiquemos anteriormente, el TDA MaxStack tiene en su parte privada las dos colas de la STL que utilizaremos para poder representar la pila de máximos, estas
+las hemos declarado de la siguiente manera:
+- **queue<int> pila**
+- **priority_queue<int> maximos**
 ## 3.1. ESTRUCTURA INTERNA.
 Como ya indiquemos anteriormente, el TDA MaxStack tiene en su parte privada las dos colas de la STL que utilizaremos para poder representar la pila de máximos, estas
 las hemos declarado de la siguiente manera:
@@ -87,26 +110,39 @@ Devuelve el número de elementos de la pila, es decir su tamaño. Internamente l
 
 - **void MaxStack::poner(const int &x)**
 Una función que ya no es tan trivial como si lo eran las anteriores. Esta función es la encarga de insertar el número entero x pasado como parámetro a la función.
+Una función que ya no es tan trivial como si lo eran las anteriores. Esta función es la encarga de insertar el número entero x pasado como parámetro a la función.
 Esta función es la que implementa lo que hablemos al principio de la descripción de la clase, aquello de que no se insertará en la cola con prioridad (encargada de manejar
+los máximos) el número que queremos insertar en la pila, si dicho número no va a ser un máximo. Esto nos permite ahorrar recursos de la máquina en la que se vaya a ejecutar.
 los máximos) el número que queremos insertar en la pila, si dicho número no va a ser un máximo. Esto nos permite ahorrar recursos de la máquina en la que se vaya a ejecutar.
 
     Ahora vamos a mostrar como hemos implementado la función, y después pondremos un ejemplo de como funcionaría dicha función.
 
     En primer lugar, y como ya hemos indicado, la función recibe como parámetro un número entero x, pasado como una referencia constante. Lo primero que nos encontramos al empezar la
+    En primer lugar, y como ya hemos indicado, la función recibe como parámetro un número entero x, pasado como una referencia constante. Lo primero que nos encontramos al empezar la
     función es un contenedor auxiliar de tipo queue y llamado **aux**. Este contenedor lo vamos a utilizar porque cada vez que queramos insertar un elemento, debemos sacar los elementos
+    que hay en nuestra pila de tipo queue dejándola completamente vacía, insertar el nuevo elemento en esta última cola, y luego volvemos a pasar a la cola pila los elementos que guardamos
     que hay en nuestra pila de tipo queue dejándola completamente vacía, insertar el nuevo elemento en esta última cola, y luego volvemos a pasar a la cola pila los elementos que guardamos
     en la cola aux. **Antes de seguir quiero hacer una aclaración, como ya sabemos a estas alturas, este ejercicio consiste en implementar una pila de máximos utilizando una cola y una cola con
     prioridad de la STL (queue y priority_queue, respectivamente), pues a partir de ahora a la queue la llamaré la cola pila, y a la priority_queue la cola de máximos, que es como la hemos definido
+    en la estructura interna del TDA MaxStack.** Seguimos, deciamos que tenemos que vaciar la cola pila en aux, insertar el nuevo elemento en la cola pila, y después volver a insertar en la cola pila
     en la estructura interna del TDA MaxStack.** Seguimos, deciamos que tenemos que vaciar la cola pila en aux, insertar el nuevo elemento en la cola pila, y después volver a insertar en la cola pila
     los elementos que guaradamos en la cola aux. Esto lo hacemos porque las colas tienen política FIFO (First Input Last Output), al contrario que ocurre con las pilas que es LIFO. Entonces tenemos que
     en las colas tenemos que guardar los elementos por el back(por el final) y consultarlos/extraerlos por el front(por el principio), entonces si insertamos el nuevo elemento x por donde corresponde (por
     el back), si después de esto queremos obtener el número que hay en el tope de la pila (que sería el front() de la cola pila), nos devolvería el primer elemento que insertamos, luego no obtendríamos el último
     que acabamos de insertar, que es lo que realmente devolvería una pila aunque nosotros estemos trabajando internamente con una cola. La solución a esto es utilizar la cola aux para hacer un traspaso
     de los números, insertar el nuevo, y volver a insertar de nuevo los números.
+    el back), si después de esto queremos obtener el número que hay en el tope de la pila (que sería el front() de la cola pila), nos devolvería el primer elemento que insertamos, luego no obtendríamos el último
+    que acabamos de insertar, que es lo que realmente devolvería una pila aunque nosotros estemos trabajando internamente con una cola. La solución a esto es utilizar la cola aux para hacer un traspaso
+    de los números, insertar el nuevo, y volver a insertar de nuevo los números.
 
     La implementación que hemos hecho es: creamos una queue<int> aux, la cola aux. Después hacemos un bucle while que realizará iteraciones mientras que la cola pila no esté vacia (!pila.empty()), una vez
     dentro del cuerpo del while, hacemos un aux.push(pila.front()), es decir, insertamos en aux el primer elemento que hay en la cola pila. Después, tenemos que eliminar el elemento que había al principio
+    La implementación que hemos hecho es: creamos una queue<int> aux, la cola aux. Después hacemos un bucle while que realizará iteraciones mientras que la cola pila no esté vacia (!pila.empty()), una vez
+    dentro del cuerpo del while, hacemos un aux.push(pila.front()), es decir, insertamos en aux el primer elemento que hay en la cola pila. Después, tenemos que eliminar el elemento que había al principio
     de la cola pila, porque si no entraríamos en un bucle infinito. Lo eliminamos llamando a la función pop(): pila.pop(); Una vez fuera del bucle while, tendremos todos los elementos de la cola pila en la cola
+    aux. Es el momento de insertar el nuevo elemento x en la cola pila: pila.push(x); Ahora aplicamos ingeniería inversa, vaciamos todos los elementos de la cola aux en la cola pila, pero con la difirencia
+    respecto al principio de que ya tenemos insertado el nuevo elemento. Una vez que tengamos la cola aux vacía, y la cola pila con todos los elementos ya tendríamos la  mitad del trabajo hecho, habríamos
+    arreglado la cola pila!!! La otra mitad del trabajo consistiría en arreglar la cola de máximos. Primero vamos a ver un ejemplo del proceso que acabamos de describir y después pasaremos a ver la cola de
     aux. Es el momento de insertar el nuevo elemento x en la cola pila: pila.push(x); Ahora aplicamos ingeniería inversa, vaciamos todos los elementos de la cola aux en la cola pila, pero con la difirencia
     respecto al principio de que ya tenemos insertado el nuevo elemento. Una vez que tengamos la cola aux vacía, y la cola pila con todos los elementos ya tendríamos la  mitad del trabajo hecho, habríamos
     arreglado la cola pila!!! La otra mitad del trabajo consistiría en arreglar la cola de máximos. Primero vamos a ver un ejemplo del proceso que acabamos de describir y después pasaremos a ver la cola de
@@ -114,29 +150,41 @@ los máximos) el número que queremos insertar en la pila, si dicho número no v
 
     Veámos esto con un ejemplo que tiene 3 pasos:
     1. Estado inicial.
+    1. Estado inicial.
     Nos encontramos con: x=5, aux:[], pila:[2, 7, 1] donde 2 es el elemento que hay en front() y 1 el elemento que hay en back(), que simulando a una pila, el elemento que hay en top() sería 2.
 
     2. Estado intermedio.
+    2. Estado intermedio.
     Tenemos que: x=5, aux:[2, 7, 1], pila:[5] donde 5 es el elemento que hay en front() y en back(), que simulando a una pila, también sería el elemento que hay en top(), YA QUE SÓLO ESTÁ ÉL!!!!!!
 
+    3. Estado final.
+    Nos queda que: x=5, aux:[], pila:[5, 2, 7, 1] donde 5 es el elemento que hay en front() y 1 el elemento que hay en back(), que simulando a una pila, el elemento que hay en top() sería el mismo que el que hay en front(), es decir, 5.
     3. Estado final.
     Nos queda que: x=5, aux:[], pila:[5, 2, 7, 1] donde 5 es el elemento que hay en front() y 1 el elemento que hay en back(), que simulando a una pila, el elemento que hay en top() sería el mismo que el que hay en front(), es decir, 5.
 
     Ahora vamos a hablar de la gestión de cola de máximos, aunque ya lo hemos explicado cuando expliquemos el TDA MaxStack, al comienzo de este punto, por lo que no nos extenderemos mucho más. La cola de máximos
     es una priority_queue, como ya sabemos. A diferencia de su hermana, la queue, la priority_queue de la STL se consulta con la opción top(), en lugar de front(). El resto de funciones son las mismas. Existe otra
     diferencia además de la función que ya hemos comentado, y es que la priority_queue no alamacena los números tal y como se los introducimos (como si que pasa en la queue), lo que ocurre es que la priority_queue
+    Ahora vamos a hablar de la gestión de cola de máximos, aunque ya lo hemos explicado cuando expliquemos el TDA MaxStack, al comienzo de este punto, por lo que no nos extenderemos mucho más. La cola de máximos
+    es una priority_queue, como ya sabemos. A diferencia de su hermana, la queue, la priority_queue de la STL se consulta con la opción top(), en lugar de front(). El resto de funciones son las mismas. Existe otra
+    diferencia además de la función que ya hemos comentado, y es que la priority_queue no alamacena los números tal y como se los introducimos (como si que pasa en la queue), lo que ocurre es que la priority_queue
     ordena los elementos, en este caso los números, de menor a mayor mostrándonos así el mayor elemento en top(), de ahí su nombre de cola **con prioridad**. Es por eso que utilizamos está estructura para gestionar los máximos,
     ya que trae esta funcionalidad ya implementada y nos simplifica muchísimo el trabajo. También destacar que la **cola con prioridad de la STL** admite valores repetidos. Pues bien, en nuestro caso ocurre que, una vez
     que hemos insertado el elemento x en la cola pila, toca tratarlo en la cola de máximos. Lo primero que hacemos es comoprobar si la cola de máximos no está vacía,y ahora se nos presentan dos casos: **CASO 1: la cola de máximos no está vacía**,
+    que hemos insertado el elemento x en la cola pila, toca tratarlo en la cola de máximos. Lo primero que hacemos es comoprobar si la cola de máximos no está vacía,y ahora se nos presentan dos casos: **CASO 1: la cola de máximos no está vacía**,
     entonces lo siguiente que encontramos es comprobar el elemento que se encuentra en el tope (el mayor elemento que hay en la cola maximos hasta el momento), si es menor o igual que el número x (el número que queremos insertar) insertamos x en la cola de máximos; en caso de que
     x sea menor que número tope de la cola, ni lo insertamos, pues nunca será un máximo ya que hay un elemento que es mayor y que insertemos anteriormente, y debido a nuestra política LIFO de MaxStack, el número x saldrá antes
+    que el elemento que ya hay en el tope, luego cuando hagamos un MaxStack::tope(), si x es el número que hay en el tope de la pila, se nos devolverá x y el elemento que hay en el tope de la pila. **CASO 2: la cola de máximos está vacía** lo
+    que provoca que se inserte el número x en la cola de máximos de forma inmediata, pues no hay números con los que comparar, y será un máximo de forma inmediata.
     que el elemento que ya hay en el tope, luego cuando hagamos un MaxStack::tope(), si x es el número que hay en el tope de la pila, se nos devolverá x y el elemento que hay en el tope de la pila. **CASO 2: la cola de máximos está vacía** lo
     que provoca que se inserte el número x en la cola de máximos de forma inmediata, pues no hay números con los que comparar, y será un máximo de forma inmediata.
 
     Esto llevado al código sería: un condicional if-else donde en if la condición será que la cola de máximos no esté vacía (!maximos.empty()), si se cumple está condición entrará a otro condicional if donde la condición de ahora será que el tope de la cola
     sea menor o igual que x (maximos.top()<=x), si lo es, entonces se hace un maximos.push(x), y se inserta el nuevo máximo. En caso de que la cola de máximos si esté vacía, volvemos al if-else que teníamos al principio y nos iríamos a la parte del else en concreto,
     donde lo que haríamos sería insertar x en maximos sin tener que comprobar nada más.
+    donde lo que haríamos sería insertar x en maximos sin tener que comprobar nada más.
 
+    Esto último es muy importante, tenemos que comprobar si la cola maximos está vacia o no, en caso de que sea la primera iteración o que simplemente hemos sacado todos los números que contenía. Y si hiciéramos (maximos.top() <= x) sin
     Esto último es muy importante, tenemos que comprobar si la cola maximos está vacia o no, en caso de que sea la primera iteración o que simplemente hemos sacado todos los números que contenía. Y si hiciéramos (maximos.top() <= x) sin
     comprobar que la cola maximos tenga elementos o no, puede que esté vacía y nos de un jodido **segmentation fault**.
 
@@ -145,22 +193,35 @@ los máximos) el número que queremos insertar en la pila, si dicho número no v
     1er Caso el número a insertar x es mayor que el número tope de la cola de máximos.
     1. Estado inicial.
     Nos encontramos con: x=9, pila:[3, 2], maximos:[2, 3] donde pila.front()=3 (simulando el tope de la pila), y maximos.top()=3.
+    1er Caso el número a insertar x es mayor que el número tope de la cola de máximos.
+    1. Estado inicial.
+    Nos encontramos con: x=9, pila:[3, 2], maximos:[2, 3] donde pila.front()=3 (simulando el tope de la pila), y maximos.top()=3.
 
+    2. Estado final.
+    Tenemos que: x=9, pila:[9, 3, 2], maximos:[2, 3, 9] donde pila.front()=9 (simulando el tope de la pila), y maximos.top()=9.
     2. Estado final.
     Tenemos que: x=9, pila:[9, 3, 2], maximos:[2, 3, 9] donde pila.front()=9 (simulando el tope de la pila), y maximos.top()=9.
 
     2do Caso: el número a insertar x es menor que el número tope de la cola de máximos.
+    2do Caso: el número a insertar x es menor que el número tope de la cola de máximos.
 
+    1. Estado inicial.
+    Nos encontramos con: x=1, pila:[3, 2], maximos:[2, 3] donde pila.front()=3 (simulando el tope de la pila), y maximos.top()=2.
     1. Estado inicial.
     Nos encontramos con: x=1, pila:[3, 2], maximos:[2, 3] donde pila.front()=3 (simulando el tope de la pila), y maximos.top()=2.
 
     2. Estado final.
     Tenemos que: x=1, pila:[1, 2, 3], maximos:[2, 3] donde pila.front()=1 (simulando el tope de la pila), y maximos.top()=3,, el mismo que antes, y no se inserta el 1 en maximos ya que no es candidato a serlo.
+    2. Estado final.
+    Tenemos que: x=1, pila:[1, 2, 3], maximos:[2, 3] donde pila.front()=1 (simulando el tope de la pila), y maximos.top()=3,, el mismo que antes, y no se inserta el 1 en maximos ya que no es candidato a serlo.
 
+    El código de la función es:
     El código de la función es:
     @image html poner_MaxStack.png
 
 
+- **void MaxStack::quitar()**
+    Elimina el elemento que hay en el tope de la pila, esto es, elimina el número que hay en el frente de la cola pila y el número que hay en el tope
 - **void MaxStack::quitar()**
     Elimina el elemento que hay en el tope de la pila, esto es, elimina el número que hay en el frente de la cola pila y el número que hay en el tope
     de la cola máximos. Tenemos que tener en cuenta que en la cola maximos no están todos los números que hay en la cola pila, por eso a la hora de quitar
@@ -168,13 +229,17 @@ los máximos) el número que queremos insertar en la pila, si dicho número no v
     la función poner() que acabamos de mencionar, está todo pensado para que a la hora de extraer un elememto que ha sido un máximo, coincidan que estén en el frente de la cola pila
     y en el tope de la cola máximos). Entonces, lo que hacemos es comprobar que el número a extraer esté en ambas colas, que lo está, pues lo eliminamos de ambas, que no está en máximos, pues
     obviamente sólo eliminamos el número de la cola pila. Así es como se vacía nuestra estructura MaxStack.
+    y en el tope de la cola máximos). Entonces, lo que hacemos es comprobar que el número a extraer esté en ambas colas, que lo está, pues lo eliminamos de ambas, que no está en máximos, pues
+    obviamente sólo eliminamos el número de la cola pila. Así es como se vacía nuestra estructura MaxStack.
 
+- **elemento MaxStack::tope()**
 - **elemento MaxStack::tope()**
     Hay una modificación en esta función, y ya lo hemos indicado en el punto 2.2. Si miramos en cplusplus.com la función stack::top() pondremos observar que devuelve **una referencia &**
     al elemento que devuelve, en nuestro caso, creamos una instancia e del struct elemento dentro de la función, a e.valor le asignamos el número que hay en el frente de la cola pila y en e.maximo
     le asignamos el número que hay en el tope de la cola máximos, y devolvemos el objeto e. Después de explicar esto, podemos observar que **e** es una variable local de la función MaxStack::tope(),
     por lo que si lo devolvemos por referencia en vez de por copia una vez que termina de ejecutarse la función **e** muere y nos devolvería una posición de memoria donde **antes estaba e pero ya no,
     por lo que nos dará un segmentation fault**, en cambio al devolverlo por copia no tendríamos ningún problema.
+
 
 # 4. TDA MAXQUEUE.
 En este apartado explicaremos el tipo de dato MaxQueue. Este tipo de dato abstracto es el segundo tipo de dato necesario para resolver esta práctica. Se trata de un contenedor que se comporta como una
@@ -208,6 +273,7 @@ Constructor por defecto, crea una instancia de la clase donde la cola de element
 - **MaxQueue::MaxQueue(const MaxQueue& mq)**
 Constructor de copia, crea una instancia nueva y copia en la cola de esta nueva instancia el contenido de la cola de la MaxQueue que se pasa como parámetro.
 
+## 4.3. FUNCIONES.
 ## 4.3. FUNCIONES.
 - **bool MaxQueue::empty() const**
 Compruba si la cola está vacía, devuelve true si lo está y false si no. Este método utiliza la función empty() de la clase list de la STL.
@@ -266,6 +332,7 @@ objetos MaxQueue. No lanza excepciones, lo que garantiza su ejecución sin inter
 # 5. EJEMPLOS DE EJECUCIÓN
 El objetivo de este punto es mostrar varios ejemplos de ejecución de MaxStack y MaxQueue para unos datos de entrada concretos. Para ello, utilizaremos los
 archivos pila_max.cpp y cola_max.cpp que nos proporciona el profesor. Dichos archivos contienen la función main() necesaria para que se puedan ejecutar nuestros TDAs.
+archivos pila_max.cpp y cola_max.cpp que nos proporciona el profesor. Dichos archivos contienen la función main() necesaria para que se puedan ejecutar nuestros TDAs.
 
 **Recordamos que antes de ejecutar los programas tenemos que compilar nuestro proyecto, por eso debemos abrir una terminal y nos situamos en la raíz del proyecto, una vez ahí
 debemos ejecutar: **
@@ -274,16 +341,18 @@ debemos ejecutar: **
 > & make
 
 Una vez que hayamos echo esto, **ya tendríamos nuestro proyecto compilado, ahora ya podemos ejecutarlo como indicamos más abajo.**
+Una vez que hayamos echo esto, **ya tendríamos nuestro proyecto compilado, ahora ya podemos ejecutarlo como indicamos más abajo.**
 
 Por último, destacar que los parámetros de entrada que aceptan tanto MaxStack como MaxQueue son **números enteros, como los números a insertar en la pila y en la cola, y .
 para decirle que elimine el elememto que hay en el tope de la pila o en el frente de la cola**.
 
 ## 5.1. TDA MAXSTACK
 Para ejecutar el TDA MAX, debemos situarnos en la raíz del proyecto y ejecutar en una terminal:
+Para ejecutar el TDA MAX, debemos situarnos en la raíz del proyecto y ejecutar en una terminal:
 
 > $ ./pila_max argumentos
 
-Pongo solamente argumentos porque como ya hemos indicado, pueden ser tanto números como puntos '.'. Ahora vamos a ver 3 ejemplos donde quedará más claro.  
+Pongo solamente argumentos porque como ya hemos indicado, pueden ser tanto números como puntos '.'. Ahora vamos a ver 3 ejemplos donde quedará más claro.
 
 ### 1er ejemplo.
 > $ ./pila_max 1 2 . 3 4 . . .
@@ -324,4 +393,5 @@ La salida sería:
 > $ ./cola_max 4 6 3 4 . . . .
 La salida sería:
 @image html ejemplo4_maxqueue.png
+*/
 */
